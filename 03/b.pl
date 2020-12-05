@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 use strict;
-use List::Util qw(min max);
 use Term::ANSIColor;
 
 my ($x, $y) = (0, 0);
@@ -43,7 +42,7 @@ for my $d ([1, 1], [3, 1], [5, 1], [7, 1], [1, 2]) {
 print "Max X: $xmax\n";
 print "Product: $p\n";
 
-exit;
+# exit;
 
 for my $y (0 .. $h) {
     for my $x (0 .. $xmax) {
