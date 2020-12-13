@@ -18,12 +18,15 @@ for (split ',', <>) {
 print "Number of busses: ", 0+@b, "\n";
 
 my %p = ($b[0] => 1);
+my $m = $b[0];
 my $n = 0;
 l: while (1) {
-    $n += lcm keys %p;
+    $n += $m;
     for my $b (@b) {
+        next if $p{$b};
         next l unless ($n + $b{$b}) % $b == 0;
         $p{$b} = 1;
+        $m = lcm keys %p;
     }
     last;
 }
