@@ -11,27 +11,28 @@ for my $sn (
     [3,1,2],
     [18,8,0,5,4,1,20],
     ) {
-
-    my @n = @$sn;
     my %a;
-    my %s;
     my %t;
     my $n;
+    my $p;
     my $t = 0;
+
+    while ($t < @$sn) {
+        $t++;
+        $n = $sn->[$t-1];
+
+        $a{$n} = $t - $t{$n} if $t{$n};
+        $t{$n} = $t;
+        $p = $n;
+    }
 
     while ($t < 30_000_000) {
         $t++;
+        $n = $a{$p} || 0;
 
-        if ($t <= @n) {
-            $n = $n[$t-1];
-        } else {
-            my $p = $n = $n[$t-2];
-            $n[$t-1] = $n = $s{$n} <= 1 ? 0 : $a{$p};
-        }
-
-        $a{$n} = $t - $t{$n};
+        $a{$n} = $t - $t{$n} if $t{$n};
         $t{$n} = $t;
-        $s{$n}++;
+        $p = $n;
     }
 
     print "Starting numbers @$sn, turn $t number $n\n";
