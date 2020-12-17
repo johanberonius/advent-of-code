@@ -22,12 +22,9 @@ print "Your ticket: @y\n";
 
 
 my %p;
-my $c = 0;
 my $v = 0;
 t: for my $t (@t) {
-    $c++;
 
-    my $i = 0;
     for my $n (@$t) {
         next t unless any {
             my ($id, $min1, $max1, $min2, $max2) = @$_;
@@ -35,6 +32,7 @@ t: for my $t (@t) {
         } @r;
     }
 
+    my $i = 0;
     for my $n (@$t) {
         for my $r (@r) {
             my ($id, $min1, $max1, $min2, $max2) = @$r;
