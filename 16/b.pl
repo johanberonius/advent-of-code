@@ -58,10 +58,7 @@ while (%p) {
         push @d => $y[$i[0]] if $p =~ /departure/;
 
         delete $p{$p};
-        for my $p (keys %p) {
-            delete $p{$p}{$i[0]};
-        }
-
+        delete $p{$_}{$i[0]} for keys %p;
     }
 }
 
