@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use List::Util qw(min max all product);
+use Term::ANSIColor;
 
 my ($x, $y) = (0, 0);
 my $i;
@@ -81,7 +82,7 @@ my @notopleft = sort grep $notop{$_}, map $le{$_}[0], grep keys @{$le{$_}} == 1,
 
 my %gt;
 
-$gt{'0,0'} = $notopleft[0];
+$gt{'0,0'} = $notopleft[7];
 
 for my $gy (0..$g-1) {
     for my $gx (0..$g-1) {
@@ -136,6 +137,8 @@ my @sm = (
 
 ($x, $y) = (0, 0);
 my %sm;
+my %tsm;
+my %fsm;
 while ($_ = shift @sm) {
     chomp;
     $sm{$x++ . ',' . $y} = $_ for split '';
@@ -165,6 +168,7 @@ for my $y ($gymin..$gymax) {
             for my $fy (0, 1) {
                 sm: for my $sxy (0, 1) {
                     # print "Orientation $fx,$fy,$sxy\n";
+                    %tsm = ();
 
                     for my $smy (!$sxy ? ($smymin..$smymax) : ($smxmin..$smxmax)) {
                         for my $smx (!$sxy ? ($smxmin..$smxmax) : ($smymin..$smymax)) {
@@ -182,6 +186,7 @@ for my $y ($gymin..$gymax) {
                             if ($sm{"$sx,$sy"} eq '#') {
 
                                 my ($gx, $gy) = ($x + $smx, $y + $smy);
+                                $tsm{"$gx,$gy"} = '#';
 
                                 next sm unless $g{"$gx,$gy"} eq '#';
                             }
@@ -191,6 +196,7 @@ for my $y ($gymin..$gymax) {
                     }
                     # print "Found sea monster at $x,$y\n";
                     $smc++;
+                    %fsm = (%fsm, %tsm);
 
                 }
             }
@@ -207,3 +213,22 @@ my $wr = grep $_ eq '#', values %g;
 $wr -= $smc * $smp;
 print "Water roughness: $wr\n";
 
+
+
+print "\n\n";
+
+for my $y ($gymin .. $gymax) {
+    for my $x ($gxmin .. $gxmax) {
+        my $g = $g{"$x,$y"};
+        my $sm = $fsm{"$x,$y"};
+        if ($sm eq '#') {
+            print color('black', 'on_green'), ' # ';
+        } elsif ($g eq '#') {
+            print color('white', 'on_blue'), ' ~ ';
+        } elsif ($g eq '.') {
+            print color('white', 'on_blue'), ' • ';
+        }
+    }
+    print color('reset'), "\n";
+}
+print "\n\n";
