@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+use strict;
+
+my $b = 57;
+my $c = $b;
+my $h = 0;
+$b = 105700;
+$c = 122700;
+
+while (1) {
+    loop: for (my $d = 2; $d < $b; $d++) {
+        for (my $e = 2; $e < $b; $e++) {
+            if ($d * $e == $b) {
+                $h++;
+                print "$d * $e == $b\n";
+                last loop;
+            }
+        }
+    }
+
+    print "b: $b, c: $c, h: $h\n";
+    last if $b >= $c;
+    $b += 17;
+}
+

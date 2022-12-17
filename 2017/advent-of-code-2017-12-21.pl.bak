@@ -1,0 +1,83 @@
+#!/usr/bin/perl
+use strict;
+# use List::Util qw(sum min);
+# use List::MoreUtils qw(first_index);
+
+# 0: 1 x 3 = 3
+# 1: 1 x 3 => 1 x 4 = 4
+# 2: 2 x 2 => 2 x 3 = 6
+# 3: 2 x 3 => 2 x 4 = 8
+# 4: 4 x 2 => 4 x 3 = 12
+# 5: 4 x 3 => 4 x 4 = 16
+
+
+my %r;
+while (<>) {
+    chomp;
+    my ($s, $d) = split /\s*=>\s*/;
+    my $a = g2a($s);
+    my $f = flip($a);
+    $r{$s} = $d;
+    $r{a2g($f)} = $d;
+    $r{a2g(rotate180($a))} = $d;
+    $r{a2g(rotate180($f))} = $d;
+    $r{a2g(rotate90r($a))} = $d;
+    $r{a2g(rotate90r($f))} = $d;
+    $r{a2g(rotate90l($a))} = $d;
+    $r{a2g(rotate90l($f))} = $d;
+}
+
+sub g2a {
+    my $s = shift;
+    my %m = ('#' => 1, '.' => 0);
+    return [map [map $m{$_}, split ''], split '/', $s];
+}
+
+sub a2g {
+    my $a = shift;
+    my %m = (1 => '#', 0 => '.');
+    return join '/', map join('', map $m{$_}, @$_), @$a;
+}
+
+sub flip {
+    my $a = shift;
+    return [reverse @$a];
+}
+
+sub rotate180 {
+    my $a = shift;
+    return [reverse map [reverse @$_], @$a];
+}
+
+sub rotate90r {
+    my $a = shift;
+    my $h = $#$a;
+    my $w = $#{$a->[0]};
+    my $b = [];
+
+    for my $y (0..$h) {
+        for my $x (0..$w) {
+            $b->[$x][$h-$y] = $a->[$y][$x];
+        }
+    }
+    return $b;
+}
+
+sub rotate90l {
+    my $a = shift;
+    my $h = $#$a;
+    my $w = $#{$a->[0]};
+    my $b = [];
+
+    for my $y (0..$h) {
+        for my $x (0..$w) {
+            $b->[$w-$x][$y] = $a->[$y][$x];
+        }
+    }
+    return $b;
+}
+
+# use Data::Dumper;
+# print Dumper(\%r);
+print join "\n", sort keys %r, "\n";
+print scalar keys %r, "\n";
