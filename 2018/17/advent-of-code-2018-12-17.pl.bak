@@ -1,0 +1,89 @@
+#!/usr/bin/perl
+use strict;
+use Term::ANSIColor;
+use Time::HiRes qw(sleep);
+
+my %scan;
+my ($xmin, $xmax, $ymin, $ymax);
+while (<>) {
+    my ($axis, $main, $from, $to) = /([xy])=(\d+),\s*[xy]=(\d+)(?:\.\.(\d+))?/;
+
+    if ($axis eq 'x') {
+        my $x = $main;
+        $xmin = $x if !$xmin || $xmin > $x;
+        $xmax = $x if !$xmax || $xmax < $x;
+        for my $y ($from..$to) {
+            $scan{"$x,$y"} = '#';
+            $ymin = $y if !$ymin || $ymin > $y;
+            $ymax = $y if !$ymax || $ymax < $y;
+        }
+    } elsif ($axis eq 'y') {
+        my $y = $main;
+        $ymin = $y if !$ymin || $ymin > $y;
+        $ymax = $y if !$ymax || $ymax < $y;
+        for my $x ($from..$to) {
+            $scan{"$x,$y"} = '#';
+            $xmin = $x if !$xmin || $xmin > $x;
+            $xmax = $x if !$xmax || $xmax < $x;
+       }
+    }
+}
+
+my $width = $xmax - $xmin + 1;
+my $height = $ymax - $ymin + 1;
+my $area = $width * $height;
+
+print "Scan $xmin, $ymin => $xmax, $ymax, size: $width x $height, area: $area\n";
+print "\n";
+
+
+
+my $water = 0;
+my $overflow;
+my @pipe = ("500,0");
+$scan{$pipe[-1]} = '+';
+
+while (@pipe) {
+    my $position = $pipe[-1];
+    my ($x, $y) = split ',', $position;
+
+    if ($y == $ymax) {
+        pop @pipe until $scan{$pipe[-1]} eq '*';
+        ($x, $y) = split ',', $pipe[-1];
+        $overflow = $y;
+        next;
+    } elsif (!$scan{"$x,". ($y+1)}) {
+        $y++;
+    } elsif (!$scan{($x-1).",$y"} and !$overflow || $y >= $overflow) {
+        $x--;
+    } elsif (!$scan{($x+1).",$y"} and !$overflow || $y >= $overflow) {
+        $x++;
+    } else {
+        $scan{$pipe[-1]} = '~';
+        pop @pipe;
+        $scan{$pipe[-1]} = '*';
+        next;
+    }
+
+    push @pipe => "$x,$y";
+    $scan{$pipe[-1]} = '~';
+    $water++;
+    draw();
+}
+
+sub draw {
+    print "\n\n";
+    print "Water: $water\n";
+    for my $y (0..$ymax) {
+        for my $x ($xmin..$xmax) {
+            my $s = $scan{"$x,$y"};
+            print color('rgb225', 'on_rgb005'), ' + ' if $s eq '+';
+            print color('rgb225', 'on_rgb005'), ' ~ ' if $s eq '~';
+            print color('rgb225', 'on_rgb005'), ' * ' if $s eq '*';
+            print color('rgb100', 'on_rgb110'), ' # ' if $s eq '#';
+            print color('black', 'on_rgb420'), ' • ' unless $s;
+        }
+        print color('reset'), "\n";
+    }
+    sleep 0.2;
+}

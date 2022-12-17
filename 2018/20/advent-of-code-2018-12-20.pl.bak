@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+use strict;
+
+my $root = { dir => 'X' };
+my $tip = $root;
+my @branch;
+
+for (split '', <>) {
+    if (/^([NESW])$/) {
+        my $node = { dir => $1 };
+        push @{$tip->{children}} => $node;
+        $tip = $node;
+    } elsif ($_ eq '(') {
+        push @branch => $tip;
+    } elsif ($_ eq '|') {
+        push @{$branch[-1]{tips}} => $tip;
+        $tip = $branch[-1];
+    } elsif ($_ eq ')') {
+        push @{$branch[-1]{tips}} => $tip;
+        pop @branch;
+    }
+}
+
+
+branch($root, 0);
+
+sub branch {
+    my $tip = shift;
+    my $level = shift;
+    print '  ' x $level;
+    print $tip->{dir}, "\n";
+    branch($_, $level+1) for @{$tip->{children}};
+}
