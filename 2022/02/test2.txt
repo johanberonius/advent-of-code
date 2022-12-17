@@ -1,0 +1,9 @@
+A X
+B X
+C X
+A Y
+B Y
+C Y
+A Z
+B Z
+C Z
