@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use List::Util qw(min max);
-use Math::Utils qw(gcd);
+use Math::Utils qw(gcd floor);
 use Term::ANSIColor;
 use Time::HiRes qw(time sleep);
 
@@ -58,30 +58,54 @@ my %turn = (
 );
 my %path = ("$px,$py" => $dir[$dir][2]);
 
+# Test
+# my %transform = (
+#     "2,0 => 2,-1" => [0, 1, 'U'],
+#     "2,0 => 1,0" => [1, 1, 'L'],
+#     "2,0 => 3,0" => [3, 2, 'U'],
+
+#     "0,1 => 0,0" => [2, 0, 'U'],
+#     "0,1 => -1,0" => [3, 2, 'R'],
+#     "0,1 => 0,2" => [2, 2, 'U'],
+
+#     "1,1 => 1,0" => [2, 0, 'R'],
+#     "1,1 => 1,2" => [2, 2, 'L'],
+
+#     "2,1 => 3,1" => [3, 2, 'R'],
+
+#     "2,2 => 1,2" => [1, 1, 'R'],
+#     "2,2 => 2,3" => [0, 1, 'U'],
+
+#     "3,2 => 3,1" => [2, 1, 'L'],
+#     "3,2 => 4,2" => [2, 0, 'U'],
+#     "3,2 => 3,3" => [0, 1, 'L'],
+# );
+
+# Input
 my %transform = (
-    "2,0 => 2,-1" => [0, 1, 'U'],
-    "2,0 => 1,0" => [1, 1, 'L'],
-    "2,0 => 3,0" => [3, 2, 'U'],
+    "1,0 => 0,0" => [0, 2, 'U'],
+    "1,0 => 1,-1" => [0, 3, 'R'],
 
-    "0,1 => 0,0" => [2, 0, 'U'],
-    "0,1 => -1,0" => [3, 2, 'R'],
-    "0,1 => 0,2" => [2, 2, 'U'],
+    "2,0 => 2,-1" => [0, 3, ''],
+    "2,0 => 3,0" => [1, 2, 'U'],
+    "2,0 => 2,1" => [1, 1, 'R'],
 
-    "1,1 => 1,0" => [2, 0, 'R'],
-    "1,1 => 1,2" => [2, 2, 'L'],
+    "1,1 => 0,1" => [0, 2, 'L'],
+    "1,1 => 2,1" => [2, 0, 'L'],
 
-    "2,1 => 3,1" => [3, 2, 'R'],
+    "0,2 => 0,1" => [1, 1, 'R'],
+    "0,2 => -1,2" => [1, 0, 'U'],
 
-    "2,2 => 1,2" => [1, 1, 'R'],
-    "2,2 => 2,3" => [0, 1, 'U'],
+    "1,2 => 2,2" => [2, 0, 'U'],
+    "1,2 => 1,3" => [0, 3, 'R'],
 
-    "3,2 => 3,1" => [2, 1, 'L'],
-    "3,2 => 4,2" => [2, 0, 'U'],
-    "3,2 => 3,3" => [0, 1, 'L'],
+    "0,3 => -1,3" => [1, 0, 'L'],
+    "0,3 => 1,3" => [1, 2, 'L'],
+    "0,3 => 0,4" => [2, 0, ''],
 );
 
 draw();
-sleep 0.25;
+# sleep 0.25;
 
 my $steps;
 for my $step (@path) {
@@ -94,10 +118,12 @@ for my $step (@path) {
 
             if (!$g{"$nx,$ny"}) {
 
-                my ($sx, $sy) = (int $px / $side, int $py / $side);
-                my ($dx, $dy) = (int $nx / $side, int $ny / $side);
+                my ($sx, $sy) = (floor $px / $side, floor $py / $side);
+                my ($dx, $dy) = (floor $nx / $side, floor $ny / $side);
                 my ($fx, $fy) = ($nx % $side, $ny % $side);
-                my ($tx, $ty, $rotation) = @{$transform{"$sx,$sy => $dx,$dy"}};
+                my ($tx, $ty, $rotation) = @{$transform{"$sx,$sy => $dx,$dy"} or
+                    die "$px,$py => $nx,$ny,  $sx,$sy => $dx,$dy"
+                };
 
                 $ndir += $turn{$rotation};
                 $ndir %= @dir;
@@ -137,7 +163,7 @@ print "Password: ", ($py+1)*1000 + ($px+1)*4 + $dir, "\n";
 my $lines;
 my $c = 0;
 sub draw {
-    # return if $c++ % 100;
+    return if $c++ % 100;
     print "\x1B[", $lines, "A" if $lines;
     $lines = 0;
     for my $y (0..$height-1) {
@@ -165,8 +191,8 @@ sub draw {
         print "\n";
         $lines++;
     }
-    print "Steps: $steps\n";
-    $lines++;
-    sleep 0.4;
+    # print "Steps: $steps\n";
+    # $lines++;
+    # sleep 0.4;
 }
 
