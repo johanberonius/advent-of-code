@@ -1,0 +1,124 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+body > .content {
+    margin: 2em;
+    max-width: 480px;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+#cube {
+  top: 50%;
+  left: 50%;
+  margin-top: -180px;
+  margin-left: -180px;
+  cursor: pointer;
+  -webkit-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: perspective(1600px) translateZ(0);
+  -ms-transform: perspective(1600px) translateZ(0);
+  transform: perspective(1600px) translateZ(0);
+}
+
+#cube,
+#cube > .face {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#cube > .face {
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#cube > .front.face {
+  -webkit-transform: translateZ(180px);
+  -ms-transform: translateZ(180px);
+  transform: translateZ(180px);
+  background-color: #ddd;
+}
+
+#cube > .back.face {
+  -webkit-transform: rotateY(180deg) translateZ(180px);
+  -ms-transform: rotateY(180deg) translateZ(180px);
+  transform: rotateY(180deg) translateZ(180px);
+}
+
+#cube > .top.face {
+  -webkit-transform: rotateX(90deg) translateZ(180px);
+  -ms-transform: rotateX(90deg) translateZ(180px);
+  transform: rotateX(90deg) translateZ(180px);
+}
+
+#cube > .bottom.face {
+  -webkit-transform: rotateX(-90deg) translateZ(180px);
+  -ms-transform: rotateX(-90deg) translateZ(180px);
+  transform: rotateX(-90deg) translateZ(180px);
+}
+
+#cube > .right.face {
+  -webkit-transform: rotateX(-90deg) rotateY(90deg) translateZ(180px);
+  -ms-transform: rotateX(-90deg) rotateY(90deg) translateZ(180px);
+  transform: rotateX(-90deg) rotateY(90deg) translateZ(180px);
+}
+
+#cube > .left.face {
+  -webkit-transform: rotateY(-90deg) translateZ(180px);
+  -ms-transform: rotateY(-90deg) translateZ(180px);
+  transform: rotateY(-90deg) translateZ(180px);
+}
+
+#cube > .face > video {
+    position: relative;
+    width: 400%;
+    height: 300%;
+    object-fit: fill;
+}
+
+#cube > .top.face > video {
+    top: 0;
+    left: -200%;
+}
+
+#cube > .back.face > video {
+    top: -100%;
+    left: 0;
+}
+
+#cube > .left.face > video {
+    top: -100%;
+    left: -100%;
+}
+
+#cube > .front.face > video {
+    top: -100%;
+    left: -200%;
+}
+
+#cube > .bottom.face > video {
+    top: -200%;
+    left: -200%;
+}
+
+#cube > .right.face > video {
+    top: -200%;
+    left: -300%;
+}
