@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+        <title>Advent of Code 2022 - day 22 part 2: 3D cube maze</title>
+        <link href="cube.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="content">
+            <h1>Advent of Code 2022 - day 22 part 2: 3D cube maze</h1>
+
+            Det finns flera olika sätt att styra kuben:
+            <ul>
+                <li>Skrolla upp/ned och höger/vänster med mushjul eller pekplatta för att rotera runt x- & y-axlarna.</li>
+                <li>Håll inne alt-tangenten och skrolla upp/ned för att zomma ut/in och skrolla höger/vänster för att rotera runt z-axeln.</li>
+                <li>Vrid på enheten/datorn framåt/bakåt och höger/vänster för att rotera runt x- & y-axlarna.</li>
+                <li>Skjut enheten från/mot dig för att zomma in/ut.</li>
+                <li>Med pekskärm, knip med två fingar för att zooma in/ut.</li>
+                <li>Klicka på kuben för att låsa muspekaren, rör sedan musen upp/ned och höger/vänster för att rotera runt x- & y-axlarna.</li>
+                <li>Håll inne vänster musknapp och rör musen upp/ned för att zomma ut/in eller höger/vänster för att rotera runt z-axeln.
+                    Tryck <kbd>esc</kbd> för att släppa muspekaren.</li>
+            </ul>
+        </div>
+
+        <div id="cube" title="Klicka för att låsa muspekaren till kuben och rotera genom att röra musen.">
+            <div class="top face"><video src="cube.mp4" autoplay muted loop></video></div>
+            <div class="back face"><video src="cube.mp4" autoplay muted loop></video></div>
+            <div class="left face"><video src="cube.mp4" autoplay muted loop></video></div>
+            <div class="front face"><video src="cube.mp4" autoplay muted loop></video></div>
+            <div class="bottom face"><video src="cube.mp4" autoplay muted loop></video></div>
+            <div class="right face"><video src="cube.mp4" autoplay muted loop></video></div>
+        </div>
+
+        <script src="jquery-1.10.2.min.js"></script>
+        <script src="cube.js"></script>
+    </body>
+</html>
