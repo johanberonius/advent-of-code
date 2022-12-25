@@ -36,11 +36,14 @@ print "Blizzards: $bliz\n";
 
 my $c = 0;
 my $min;
+my %seen;
 my @q = [0, $startx, $starty];
 while (@q) {
-    my $q = pop @q;
+    my $q = shift @q;
     my ($step, $x, $y) = @$q;
     $c++;
+
+    next if $seen{"$x,$y,$step"}++;
 
     next if $min && $step + $endx - $x + $endy - $y >= $min-1;
 
@@ -57,7 +60,7 @@ while (@q) {
     my @db = bliz($x, $y+1, $step);
 
     my $left  = $x > 0 && !@lb;
-    my $up    = $y > 0 &&  !@ub;
+    my $up    = $y > 0 && !@ub;
     my $wait  = !@wb;
     my $right = $x < $endx && $y >=0 && !@rb;
     my $down  = $y < $endy && !@db;
@@ -68,9 +71,9 @@ while (@q) {
     push @q => [$step, $x+1, $y  ] if $right;
     push @q => [$step, $x,   $y+1] if $down;
 
-    unless ($c % 1) {
+    unless ($c % 100_000) {
         print "$c, step: $step, x: $x, y: $y, \t", ($left && '< '), ($up && '^ '), ($wait && 'W '), ($right && '> '), ($down && 'v '), "\t min: $min, q:", 0+@q, "\n";
-        draw($x, $y, $step, $left, $up, $wait, $right, $down);
+        # draw($x, $y, $step, $left, $up, $wait, $right, $down);
     }
 
 
@@ -120,6 +123,3 @@ sub draw {
     }
     print "\n";
 }
-
-
-# 441 too high
