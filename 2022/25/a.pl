@@ -21,7 +21,8 @@ while (<>) {
     print "Add: $_, \t sum: ", join(' ', reverse @s), "\n";
 }
 
-for my $i (0..$#s) {
+my $i = 0;
+while ($i < @s) {
     while ($s[$i] > 2) {
         $s[$i] -= 5;
         $s[$i+1]++;
@@ -31,6 +32,7 @@ for my $i (0..$#s) {
         $s[$i] += 5;
         $s[$i+1]--;
     }
+    $i++;
 }
 
 print "Sum: ", map($r{$_}, reverse @s), "\n";
