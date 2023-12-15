@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 use strict;
-use List::Util qw(max);
 use Term::ANSIColor;
 use Time::HiRes qw(sleep);
 
