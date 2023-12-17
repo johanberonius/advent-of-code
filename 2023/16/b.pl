@@ -23,19 +23,23 @@ $height = $y;
 
 print "\nGrid width: $width, height: $height\n";
 
+my ($sx, $sy) = (0, 0);
+my $lines = 0;
+draw();
+sleep 1;
+
 my $s = 0;
 my $m = 0;
 for my $q (
     map([$_, 0, 0, +1], 0..$width-1),
     map([$width-1, $_, -1, 0], 0..$height-1),
-    map([$_, $height-1, 0, -1], 0..$width-1),
-    map([0, $_, +1, 0], 0..$height-1),
+    reverse(map([$_, $height-1, 0, -1], 0..$width-1)),
+    reverse(map([0, $_, +1, 0], 0..$height-1)),
     ) {
-    print "Start position: $q->[0],$q->[1]\n";
-
     %e = ();
     %s = ();
     $s = 0;
+    ($sx, $sy) = @$q;
     my @q = $q;
     while (@q) {
         my ($x, $y, $dx, $dy) = @{shift @q};
@@ -75,21 +79,23 @@ for my $q (
             push @q => [$x, $y, $dx, $dy];
         }
 
-        # draw();
+        draw();
     }
 
     my $e = values %e;
     $m = $e if $e > $m;
 
-    # print "\x1B[", 1, "A";
-    print "Energized tiles: $e\n";
+    print "\x1B[", 2, "A";
+    print "Energized tiles: $e  \n";
+    print "\n";
+    sleep 0.25;
 }
 
-print "Max energized tiles: $m\n";
+print "\x1B[", 1, "A";
+print "Max energized tiles: $m  \n";
 
 
 
-my $lines;
 sub draw {
     print "\x1B[", $lines, "A" if $lines;
     $lines = 0;
@@ -117,10 +123,11 @@ sub draw {
         print "\n";
         $lines++;
     }
-    print "Steps: $s\n";
+    print "Start position: $sx,$sy\n";
     $lines++;
-    print "\n";
-    $lines++;
-    sleep 0.1;
+    print "\n" x 2;
+    $lines += 2;
+
+    sleep 0.01;
 }
 
