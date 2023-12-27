@@ -1,8 +1,7 @@
 
 use List::Util qw(min max product sum);
 
-
-use Math::Utils qw(lcm);
+use Math::Utils qw(lcm sign);
 
 use POSIX qw(floor ceil round);
 
