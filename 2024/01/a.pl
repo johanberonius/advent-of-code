@@ -10,8 +10,8 @@ while (<>) {
     push @r => $2;
 }
 
-@l = sort $a <=> $b, @l;
-@r = sort $a <=> $b, @r;
+@l = sort { $a <=> $b } @l;
+@r = sort { $a <=> $b } @r;
 
 print "@l\n";
 print "@r\n";
