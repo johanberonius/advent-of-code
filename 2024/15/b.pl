@@ -38,6 +38,7 @@ my @d = map { chomp; map $d{$_}, split '';} <>;
 print "Directions: ", 0+@d, "\n";
 
 draw();
+
 for my $d (@d) {
     my ($dx, $dy) = @$d;
 
@@ -136,9 +137,9 @@ sub draw {
             } elsif ($g eq '.') {
                 print color('on_rgb333'), " • ", color('reset');
             } elsif ($g eq '[') {
-                print color('on_rgb131'), " ${g}_", color('reset');
+                print color('on_rgb210'), " ${g}>", color('reset');
             } elsif ($g eq ']') {
-                print color('on_rgb131'), "_$g ", color('reset');
+                print color('on_rgb210'), "<$g ", color('reset');
             } elsif ($g eq '#') {
                 print color('on_rgb111'), "   ", color('reset');
             } else {
@@ -148,5 +149,7 @@ sub draw {
         print "\n";
         $lines++;
     }
-    sleep 0.02;
+    print "\n";
+    $lines++;
+    sleep 0.2;
 }
