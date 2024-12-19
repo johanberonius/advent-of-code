@@ -12,9 +12,7 @@ my ($sx, $sy) = (0, 0);
 my ($ex, $ey) = ($width-1, $height-1);
 
 my $ti = 0;
-my $sl = 1024;
-# my $sl = 12;
-for my $l ($sl..$#p) {
+for my $l (reverse 1..@p) {
     my ($x, $y) = (0, 0);
 
     for my $y (0..$height-1) {
@@ -60,15 +58,14 @@ for my $l ($sl..$#p) {
         # draw();
     }
 
-    if (!$m) {
-        print "End not reached after block at: $p[$l-1]\n";
-        last;
-    }
-
     $ti += $i;
     print "Iterations: $i\n";
     print "Min steps: $m\n";
 
+    if ($m) {
+        print "End not reached after block at: $p[$l]\n";
+        last;
+    }
 }
 
 print "Total iterations: $ti\n";
