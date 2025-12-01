@@ -8,7 +8,7 @@ while(<>) {
     chomp;
     tr/LR/-+/;
     print "$n$_";
-    $n = eval("$n$_");
+    $n += $_;
     $c++ unless $n % 100;
     print " = $n\n";
 }

@@ -10,7 +10,8 @@ while(<>) {
     print "$n$_";
     my $h = int abs $_ / 100;
     my $b = $n;
-    $n = eval("$n$_") % 100;    
+    $n += $_;
+    $n %= 100;    
     print " = $n ";
     $c += $h;
     print " \t $h hundreds ";
