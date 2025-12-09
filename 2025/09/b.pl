@@ -2,6 +2,9 @@
 use strict;
 use List::Util qw(min max any);
 use Math::Utils qw(sign);
+use Time::HiRes qw(time);
+my $t1 = time();
+
 
 my @p = map [/(\d+)/g], <>;
 print "Points: ", 0+@p, "\n";
@@ -52,20 +55,14 @@ for my $p1 (@p) {
             $ymin < $py && $py < $ymax;
         } @p;
 
-
         for my $pi (0..$#p) {
             my ($l1x, $l1y) = @{$p[$pi-1]};
             my ($l2x, $l2y) = @{$p[$pi]};
-
-            my $dx = sign($l2x - $l1x);
-            my $dy = sign($l2y - $l1y);
-            while(1) {
-                $l1x += $dx;
-                $l1y += $dy;
-                last if $l1x == $l2x && $l1y == $l2y;
-                next p if $xmin < $l1x && $l1x < $xmax &&
-                          $ymin < $l1y && $l1y < $ymax;
-            }
+            next if $l1x <= $xmin && $l2x <= $xmin;
+            next if $l1x >= $xmax && $l2x >= $xmax;
+            next if $l1y <= $ymin && $l2y <= $ymin;
+            next if $l1y >= $ymax && $l2y >= $ymax;
+            next p;
         }
 
         my $dx = abs($p2x - $p1x) + 1;
@@ -80,3 +77,4 @@ for my $p1 (@p) {
 
 print "Iterations: $i\n";
 print "Max area: $max\n";
+print "Time: ", time() - $t1, "\n";
